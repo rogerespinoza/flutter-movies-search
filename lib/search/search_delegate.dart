@@ -44,9 +44,10 @@ class MovieSearchDelegate extends SearchDelegate {
     // print(query);
 
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+    moviesProvider.getSuggestionsByQuery(query);
 
-    return FutureBuilder(
-      future: moviesProvider.searchMovie(query),
+    return StreamBuilder(
+      stream: moviesProvider.suggestionStream,
       builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
         if (!snapshot.hasData) return _empyContainer();
 
@@ -58,6 +59,20 @@ class MovieSearchDelegate extends SearchDelegate {
         );
       },
     );
+    // search with future
+    // return FutureBuilder(
+    //   future: moviesProvider.searchMovie(query),
+    //   builder: (_, AsyncSnapshot<List<Movie>> snapshot) {
+    //     if (!snapshot.hasData) return _empyContainer();
+
+    //     final movies = snapshot.data!;
+
+    //     return ListView.builder(
+    //       itemCount: movies.length,
+    //       itemBuilder: (_, index) => _MovieItem(movies[index]),
+    //     );
+    //   },
+    // );
   }
 }
 
